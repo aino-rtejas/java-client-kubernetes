@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+/home/ainosoft/cient-java/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+722218252.index
+2365393232.index
+246805998.index
+3783296572.index
+2335553241.index
+1760702282.index

@@ -1,0 +1,23 @@
+import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1Node;
+import io.kubernetes.client.openapi.models.V1NodeList;
+
+public class ListOfNodes {
+      ListOfNodes() throws ApiException{
+    	  CoreV1Api api = new CoreV1Api();
+    	  V1NodeList nodeList = api.listNode(null, null, null, null, null, null, null, null, 10, false);
+    	  
+    	    for (V1Node item : nodeList.getItems()) {
+    	        System.out.println(item.getMetadata().getName());
+    	      }
+    	  
+      }
+}
+
+//Output//
+/*
+ Node: aino-tejas
+ Node: desktop-a1
+ */
+ */

@@ -1,0 +1,26 @@
+import java.io.IOException;
+
+import io.kubernetes.client.openapi.ApiClient;
+import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.Configuration;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1Pod;
+import io.kubernetes.client.openapi.models.V1PodList;
+import io.kubernetes.client.proto.V1.List;
+import io.kubernetes.client.util.Config;
+
+public class ListPods {
+  public static void main(String[] args) throws ApiException, IOException {
+    // Set up the Kubernetes client
+    ApiClient client = Config.defaultClient();
+    Configuration.setDefaultApiClient(client);
+
+    // List pods
+    CoreV1Api api = new CoreV1Api();
+    V1PodList podList = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
+    java.util.List<V1Pod> pods = podList.getItems();
+    for (V1Pod pod : pods) {
+      System.out.println("Pod: " + pod.getMetadata().getName());
+    }
+  }
+}

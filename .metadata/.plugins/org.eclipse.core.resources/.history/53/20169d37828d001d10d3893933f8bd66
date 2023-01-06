@@ -1,0 +1,29 @@
+import java.io.IOException;
+import java.util.Scanner;
+
+import io.kubernetes.client.openapi.ApiException;
+
+
+public class Main {
+	public static void main() throws IOException, ApiException {
+		Connection con=new Connection();
+		Scanner sc=new Scanner(System.in);
+		
+		System.out.println("*************Choose From the Following Options***************");
+		System.out.println("1. List of Pods");
+		System.out.println("2. List of Nodes");
+		System.out.println("3. exit");
+
+		String option=sc.nextLine();
+		int i=0;
+		while(i == 0) {
+		if(option=="1") {
+			ListOfPods li=new ListOfPods();
+		}else if(option=="2") {
+			ListOfNodes ln=new ListOfNodes();
+		}else if(option=="3") {
+			break;
+		}
+		}
+	}
+}

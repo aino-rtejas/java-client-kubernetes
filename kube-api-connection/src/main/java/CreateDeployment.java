@@ -1,0 +1,58 @@
+
+import java.io.IOException;
+import java.util.Collections;
+
+import io.kubernetes.client.openapi.ApiClient;
+import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.Configuration;
+import io.kubernetes.client.openapi.apis.AppsV1Api;
+import io.kubernetes.client.openapi.models.V1Container;
+import io.kubernetes.client.openapi.models.V1Deployment;
+import io.kubernetes.client.openapi.models.V1DeploymentSpec;
+import io.kubernetes.client.openapi.models.V1LabelSelector;
+import io.kubernetes.client.openapi.models.V1ObjectMeta;
+import io.kubernetes.client.openapi.models.V1PodSpec;
+import io.kubernetes.client.openapi.models.V1PodTemplateSpec;
+import io.kubernetes.client.openapi.models.V1ReplicaSet;
+import io.kubernetes.client.openapi.models.V1ReplicaSetSpec;
+import io.kubernetes.client.util.Config;
+
+public class CreateDeployment {
+  public static void main(String[] args) throws ApiException, IOException {
+    // Set up the Kubernetes client
+    ApiClient client = Config.defaultClient();
+    Configuration.setDefaultApiClient(client);
+
+    // Set up the Deployment
+    V1Deployment deployment = new V1Deployment();
+    deployment.setApiVersion("apps/v1");
+    deployment.setKind("Deployment");
+
+    // Set up the Deployment metadata
+    V1ObjectMeta metadata = new V1ObjectMeta();
+    metadata.setName("my-deployment");
+    metadata.setLabels(Collections.singletonMap("app", "my-app"));
+    deployment.setMetadata(metadata);
+
+    // Set up the Deployment spec
+    V1DeploymentSpec spec = new V1DeploymentSpec();
+    spec.setReplicas(3);
+    spec.setSelector(new V1LabelSelector().matchLabels(Collections.singletonMap("app", "my-app")));
+
+    // Set up the Pod template
+    V1PodTemplateSpec template = new V1PodTemplateSpec();
+    template.setMetadata(metadata);
+    V1PodSpec podSpec = new V1PodSpec();
+    podSpec.setContainers(Collections.singletonList(new V1Container().name("my-app").image("my-app:latest")));
+    template.setSpec(podSpec);
+    spec.setTemplate(template);
+
+    deployment.setSpec(spec);
+
+    // Create the Deployment
+    AppsV1Api api = new AppsV1Api();
+    V1Deployment createdDeployment = api.createNamespacedDeployment("default", deployment, null, null, null, null);
+
+    System.out.println("Created Deployment: " + createdDeployment.getMetadata().getName());
+  }
+}

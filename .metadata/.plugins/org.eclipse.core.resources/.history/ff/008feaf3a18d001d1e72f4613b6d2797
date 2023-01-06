@@ -1,0 +1,29 @@
+import io.kubernetes.client.openapi.ApiClient;
+import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.Configuration;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1NodeList;
+import io.kubernetes.client.util.Config;
+
+public class ListNodes {
+  public static void main(String[] args) throws ApiException {
+    // Set up the Kubernetes client
+    ApiClient client = Config.defaultClient();
+    Configuration.setDefaultApiClient(client);
+
+    // List nodes
+    CoreV1Api api = new CoreV1Api();
+    V1NodeList nodeList = api.listNode(null, null, null, null, null, null, null, null, null);
+    List<V1Node> nodes = nodeList.getItems();
+    for (V1Node node : nodes) {
+      System.out.println("Node: " + node.getMetadata().getName());
+    }
+  }
+}
+This code uses the Kubernetes Java client library to list all nodes in the cluster. It does this by calling the listNode method of the CoreV1Api class, which retrieves a list of all nodes in the cluster. The code then iterates through the list of nodes and prints the name of each node.
+
+Note that this code is just a sample and you will need to modify it to suit your specific needs. You may also need to set up authentication and configure the ApiClient object in order to connect to your Kubernetes cluster.
+
+
+
+
